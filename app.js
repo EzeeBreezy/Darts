@@ -24,6 +24,18 @@ let copyRight = whosYourDaddy => {
 document.body.style.backgroundImage = "url(images/bckgnd2.jpg)"
 copyRight("Panchenko Vladyslav, FS1a")
 
+function setPointer(id) {
+let pointer = create('img')
+pointer.src = 'images/point.png'
+pointer.style.width = '50px'
+pointer.style.position = 'absolute'
+pointer.style.display = 'none'
+pointer.id = id
+document.body.appendChild(pointer)
+}
+
+
+
 //* LOCALSTORAGE
 let playerName = 'Unknown'
 let score = 0
@@ -178,25 +190,35 @@ moveBird(bird3)
 createBird("bird4", "images/original.gif", 160)
 moveBird(bird4)
 
+//pointer called the last to be over all other elems
+setPointer('pointer')
+
 //* PLAY CLICKED
 
-
-
 function daGame () {
-  let pointer = create('img')
-  pointer.src = 'images/pointer.png'
-  pointer.style.width = '40px'
-  pointer.style.position = 'absolute'
-  document.body.onmousemove = e => {
-    pointer.style.top = `${e.clientY - 40}px`
-    pointer.style.left = `${e.clientX}px`
-  }
   score = 0
   menu.style.display = "none"
-  gameHolder.style.display = "block" //! block?
+  gameHolder.style.display = "block" 
   bgdSound.play()
-  nickname.value ? (playerName = nickname.value) : null //!null?
+  nickname.value ? (playerName = nickname.value) : null 
+  nickLabel.innerText = `Current Player name - ${playerName}`
+  pointer.style.display = 'block'
+  document.body.onmousemove = e => {
+    pointer.style.top = `${e.clientY + 1}px`
+    pointer.style.left = `${e.clientX + 1}px`
+  }
+  document.body.onclick = (e) =>{
+    pointer.src = 'images/dart.gif'
+    pointer.style.width = '100px'
+    pointer.style.top = `${e.clientY - 50}px`
+    setTimeout(() => {
+    pointer.src = 'images/point.png'  
+    pointer.style.width = '50px'
+    pointer.style.top = `${e.clientY + 1}px`
+    }, 800);
+  } 
   setTimeout(() => {
+    pointer.style.display = 'none'
     menu.style.display = "flex"
     gameHolder.style.display = "none"
     console.log(score)
@@ -204,8 +226,15 @@ function daGame () {
     //game results here (alert?) and switch back to menu
   }, 30000);
 }
-    //TODO add gamestrt function (timeout 30sec)
 
     //TODO backwards timer?
 
     //TODO show hits value
+
+    //TODO wrap in functions, check if consts
+
+    //TODO leave dart picture after hit?
+
+    //TODO add comments everywhere
+
+    //TODO split daGame
