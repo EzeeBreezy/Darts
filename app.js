@@ -225,37 +225,41 @@ vader2.style.background = "rgb(245, 205, 27)"
 vader3.style.background = "rgb(27, 96, 245)"
 vader4.style.background = "rgb(240, 30, 30)"
 
-//* BIRDS
-let createBird = (id, src, size) => {
-  let bird = create("img")
-  bird.id = id
-  bird.src = src
-  bird.style.width = `${size}px`
-  bird.style.transition = "3s all"
-  bird.style.position = "absolute"
-  //a lovely bird singing
-  bird.onclick = () => chickSnd.play()
-  gameHolder.appendChild(bird)
+//* BIO-CONSTRUCTOR (we gonna construct birds)
+function Bird(src, size) {
+   let bird = create('img')
+   bird.src = src
+   bird.style.width = `${size}px`
+   bird.style.transition = "4s all"
+   bird.style.position = "absolute"
+   //a lovely bird singing
+   bird.onclick = () => chickSnd.play()
+
+   this.letFly = (parentId) => parentId.appendChild(bird)
+   
+   this.moveBird = (interval) => {
+      setInterval(() => {
+         //birds fly inside inner 80% of doc to cover aim a bit more often
+        let randomTop = Math.floor(Math.random() * 80)
+        bird.style.top = `${randomTop}%`
+        let randomLeft = Math.floor(Math.random() * 80)
+        bird.style.left = `${randomLeft}%`
+      }, interval)
+    }
 }
 
-let moveBird = id => {
-  setInterval(() => {
-     //birds fly inside inner 80% of doc to cover aim a bit more often
-    let randomTop = Math.floor(Math.random() * 80)
-    id.style.top = `${randomTop}%`
-    let randomLeft = Math.floor(Math.random() * 80)
-    id.style.left = `${randomLeft}%`
-  }, 3000)
-}
-
-createBird("bird1", "images/parrot.gif", 100)
-moveBird(bird1)
-createBird("bird2", "images/yellow.gif", 100)
-moveBird(bird2)
-createBird("bird3", "images/pink.gif", 130)
-moveBird(bird3)
-createBird("bird4", "images/original.gif", 160)
-moveBird(bird4)
+let bird1 = new Bird("images/parrot.gif", 100) 
+bird1.letFly(gameHolder)
+bird1.moveBird(3000)
+let bird2 = new Bird("images/yellow.gif", 100)
+bird2.letFly(gameHolder)
+bird2.moveBird(2750)
+let bird3 = new Bird("images/pink.gif", 130)
+bird3.letFly(gameHolder)
+bird3.moveBird(2300)
+let bird4 = new Bird("images/original.gif", 160)
+bird4.letFly(gameHolder)
+bird4.moveBird(3175)
 
 //pointer called the last to be over all other elems
 setPointer("pointer")
